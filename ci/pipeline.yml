@@ -1,0 +1,99 @@
+---
+# Docker image resource type for email notification
+resource_types:
+- name: email
+  type: docker-image
+  source:
+    repository: pcfseceng/email-resource
+
+# Pipeline resources
+resources:
+# Git clone resource
+- name: sourceCode
+  type: git
+  source:
+    uri: {{git-uri}}
+    branch: {{git-branch}}
+    username: {{git-username}}
+    password: {{git-password}} 
+# CF deployment resource
+- name: AppDeploy
+  type: cf
+  source:
+    api: {{cf-api}}
+    username: {{cf-username}}
+    password: {{cf-password}}
+    organization: {{cf-org}}
+    space: {{cf-space}}
+    skip_cert_check: false 
+# Email notification resource
+- name: notification
+  type: email
+  source:
+    smtp:
+      host: {{smtp-host}}
+      port: {{smtp-port}}
+      username: {{smtp-username}}
+      password: {{smtp-password}}
+    from: {{smtp-from}}
+    to: {{cf-to}}
+# Time trigger resource
+- name: scheduleBuild
+  type: time
+  source:
+    interval: 5h
+    start: 12:30 PM
+    stop: 06:30 PM
+    location: Asia/Kolkata
+
+jobs:
+- name: buildAndDeploy
+  # Avoid parallel jobs
+  serial: true
+  plan: 
+  - get: scheduleBuild
+    trigger: true
+    # Git clone
+  - get: sourceCode
+  - task: build
+    privileged: true
+    file: sourceCode/ci/build.yml
+    # Trigger email notification on build status
+    on_success:
+      do:
+      - task: email-content
+        file: sourceCode/ci/git-client-build-success.yml
+      - put: notification
+        params:
+          subject: email-content/subject.txt
+          body: email-content/body.txt
+    on_failure:
+      do:
+      - task: email-content
+        file: sourceCode/ci/git-client-build-fail.yml
+      - put: notification
+        params:
+          subject: email-content/subject.txt
+          body: email-content/body.txt
+    # CF push
+  - put: AppDeploy
+    params:
+      manifest: sourceCode/manifest.yml
+      path: jarFile/*.jar
+    # Trigger email notification on deploy status
+    on_success:
+      do:
+      - task: email-content
+        file: sourceCode/ci/git-client-deploy-success.yml
+      - put: notification
+        params:
+          subject: email-content/subject.txt
+          body: email-content/body.txt
+    on_failure:
+      do:
+      - task: email-content
+        file: sourceCode/ci/git-client-deploy-fail.yml
+      - put: notification
+        params:
+          subject: email-content/subject.txt
+          body: email-content/body.txt
