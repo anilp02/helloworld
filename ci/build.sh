@@ -7,7 +7,7 @@ cd sourceCode
 
 mvn clean install -e -DskipTests=false
 
-mvn sonar:sonar -Dsonar.host.url=<host uri>
+mvn sonar:sonar -Dsonar.host.url=http://54.169.190.81:9000
 
 cd target
 mv *.jar ../../jarFile/*.jar
