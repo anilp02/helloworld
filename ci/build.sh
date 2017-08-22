@@ -6,6 +6,9 @@ echo $(ls -lart)
 
 cd sourceCode
 
+echo $(pwd)
+echo $(ls -lart)
+
 # mvn clean install -e -DskipTests=true
 
 mvn clean install -e -DskipTests=false
