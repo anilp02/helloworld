@@ -1,6 +1,9 @@
 - -exc
 - |
 
+echo $(pwd)
+echo $(ls -lart)
+
 cd sourceCode
 
 # mvn clean install -e -DskipTests=true
