@@ -1,7 +1,3 @@
-- -exc
-- |
-export TERM=dumb
-
 cd sourceCode
 
 # mvn clean install -e -DskipTests=true
