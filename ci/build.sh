@@ -1,3 +1,6 @@
+- -exc
+- |
+
 cd sourceCode
 
 # mvn clean install -e -DskipTests=true
