@@ -15,4 +15,4 @@ outputs:
   
 run:
  path: sh
- args: ["ci/build.sh"]
+ args: ["sourceCode/ci/build.sh"]
