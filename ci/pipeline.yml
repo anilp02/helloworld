@@ -12,31 +12,31 @@ resources:
 - name: sourceCode
   type: git
   source:
-    uri: {{git-uri}}
-    branch: {{git-branch}}
+    uri: https://github.com/pp010/helloworld.git
+    branch: master
     username: {{git-username}}
     password: {{git-password}} 
 # CF deployment resource
 - name: AppDeploy
   type: cf
   source:
-    api: {{cf-api}}
+    api: https://api.system.dev.digifabricpcf.com
     username: {{cf-username}}
     password: {{cf-password}}
-    organization: {{cf-org}}
-    space: {{cf-space}}
-    skip_cert_check: false 
+    organization: SkyLight
+    space: Development
+    skip_cert_check: true
 # Email notification resource
 - name: notification
   type: email
   source:
     smtp:
-      host: {{smtp-host}}
-      port: {{smtp-port}}
+      host: smtp.gmail.com
+      port: "587"
       username: {{smtp-username}}
       password: {{smtp-password}}
-    from: {{smtp-from}}
-    to: {{cf-to}}
+    from: wydnpipeline@gmail.com
+    to: ["padarabinda.panigrahi@cognizant.com"]
 # Time trigger resource
 - name: scheduleBuild
   type: time
