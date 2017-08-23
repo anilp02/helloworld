@@ -20,8 +20,10 @@ cd email-content
 echo $(pwd)
 echo $(ls -lart)
 
-less subject.txt
-less body.txt
+value1=`cat subject.txt`
+echo "$value1"
+value2=`cat body.txt`
+echo "$value2"
 
 cd ..
 
