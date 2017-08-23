@@ -25,3 +25,8 @@ cd ../../jarFile
 
 echo $(pwd)
 echo $(ls -lart)
+
+cd ..
+
+echo $(pwd)
+echo $(ls -lart)
