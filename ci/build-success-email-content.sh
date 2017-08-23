@@ -14,3 +14,16 @@ echo "Build Successful\n\n ${LAST_COMMIT_DETAILS}" >> email-content/body.txt
 
 echo $(pwd)
 echo $(ls -lart)
+
+cd email-content
+
+echo $(pwd)
+echo $(ls -lart)
+
+./subject.txt
+./body.txt
+
+cd ..
+
+echo $(pwd)
+echo $(ls -lart)
